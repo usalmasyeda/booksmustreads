@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=DM+Sans:wght@400;500;600&display=swap">
 <style>
-/* Layout: a bookshop shelf. Masthead, the three books on the feed now, then the full cover wall. Covers do the talking. */
+/* Layout: a lit white bookshelf in a reading corner. Spines on shelves; tap one and it slides out, turns to its cover and opens like a book. */
 :root {
   --ink: #24201E;
   --paper: #E9E1D5;
@@ -17,13 +17,20 @@
   --sage: #65705B;
   --wine: #7A3438;
 
-  --bg: #E9E1D5;
-  --surface: #F2ECE3;
+  --wall: #E6DED2;
+  --wall-2: #D9CFC1;
+  --unit: #FBF8F3;
+  --unit-edge: #E7E0D5;
+  --niche: #EFE8DE;
   --fg: #24201E;
   --muted: #6B5F55;
-  --rule: #CFC3B2;
+  --glow: rgba(255, 214, 150, .55);
+  --bulb: #FFE3A8;
+  --leaf: #5E7A4A;
+  --leaf-2: #7C9A5F;
   --accent: #7A3438;
-  --accent-fg: #F2ECE3;
+  --page: #FBF7EF;
+  --scrim: rgba(36, 32, 30, .55);
 
   --display: "Playfair Display", "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
@@ -31,252 +38,565 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #1B1816; --surface: #24201E; --fg: #E9E1D5; --muted: #B3A595;
-    --rule: #3A332E; --accent: #C98A8D; --accent-fg: #1B1816; color-scheme: dark;
+    --wall: #1E1A17; --wall-2: #171411; --unit: #EDE6DA; --unit-edge: #CFC5B6; --niche: #2B2520;
+    --fg: #EDE6DA; --muted: #B8AA99; --glow: rgba(255, 196, 120, .42); --scrim: rgba(10, 8, 7, .72);
+    --accent: #D49A9D; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #1B1816; --surface: #24201E; --fg: #E9E1D5; --muted: #B3A595;
-  --rule: #3A332E; --accent: #C98A8D; --accent-fg: #1B1816; color-scheme: dark;
+  --wall: #1E1A17; --wall-2: #171411; --unit: #EDE6DA; --unit-edge: #CFC5B6; --niche: #2B2520;
+  --fg: #EDE6DA; --muted: #B8AA99; --glow: rgba(255, 196, 120, .42); --scrim: rgba(10, 8, 7, .72);
+  --accent: #D49A9D; color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
+html, body { overflow-x: hidden; }
 body {
-  margin: 0; background: var(--bg); color: var(--fg);
-  font-family: var(--body); font-size: 15px; line-height: 1.55;
+  margin: 0; color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.5;
+  background: radial-gradient(120% 70% at 50% 0%, var(--wall) 0%, var(--wall-2) 100%) fixed, var(--wall);
   -webkit-font-smoothing: antialiased;
 }
 .wrap {
-  max-width: 1120px; margin: 0 auto;
+  max-width: 980px; margin: 0 auto;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
 a { color: inherit; }
-a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-/* Masthead */
-.masthead { padding-block: 40px 28px; text-align: left; border-bottom: 1px solid var(--rule); }
-.masthead .row { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 32px; }
-.brand { font-family: var(--display); font-weight: 500; font-size: clamp(34px, 7vw, 64px); line-height: 1; letter-spacing: -0.01em; margin: 0; }
-.brand em { font-style: italic; color: var(--accent); }
-.tagline { font-family: var(--serif); font-style: italic; font-size: clamp(19px, 2.6vw, 24px); color: var(--muted); margin: 10px 0 0; }
-.ig { font-size: 13px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 2px; }
-.ig:hover { border-color: var(--fg); }
+.masthead { padding-block: 32px 18px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 28px; }
+.brand { font-family: var(--display); font-weight: 500; font-size: clamp(34px, 7vw, 60px); line-height: 1; margin: 0; letter-spacing: -0.01em; }
+.brand em { color: var(--accent); }
+.tagline { font-family: var(--serif); font-style: italic; font-size: clamp(18px, 2.4vw, 23px); color: var(--muted); margin: 8px 0 0; }
+.ig { font-size: 12.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 2px; color: var(--muted); }
+.ig:hover { color: var(--fg); }
+.hint { font-size: 13px; color: var(--muted); margin: 0 0 18px; }
 
-.disclosure { font-size: 12.5px; color: var(--muted); margin: 18px 0 0; max-width: 62ch; }
+/* The shelf unit */
+.scene { position: relative; padding-inline: 22px; padding-top: 14px; margin-bottom: 28px; }
+.vine { position: absolute; top: 4px; width: 40px; pointer-events: none; z-index: 3; overflow: visible; }
+.vine.left { left: 0; }
+.vine.right { right: 0; transform: scaleX(-1); }
+.vine-top { position: absolute; left: 12px; right: 12px; top: 0; height: 34px; width: calc(100% - 24px); pointer-events: none; z-index: 3; }
+.unit {
+  position: relative; background: var(--unit); border-radius: 3px;
+  padding: 14px 14px 0;
+  box-shadow: 0 30px 60px -30px rgba(36,32,30,.45), inset 0 0 0 1px var(--unit-edge);
+}
+.shelf { position: relative; }
+.niche {
+  position: relative; display: flex; align-items: flex-end; gap: 3px;
+  padding: 18px 10px 0; min-height: 210px;
+  background:
+    linear-gradient(90deg, var(--glow) 0, transparent 14%, transparent 86%, var(--glow) 100%),
+    linear-gradient(180deg, rgba(255,230,190,.35), transparent 40%),
+    var(--niche);
+  box-shadow: inset 0 10px 18px -12px rgba(36,32,30,.35);
+}
+.board {
+  height: 14px; background: var(--unit); position: relative; z-index: 2;
+  box-shadow: 0 6px 10px -6px rgba(36,32,30,.35), inset 0 1px 0 rgba(255,255,255,.9);
+}
+.plaque {
+  position: absolute; top: 8px; left: 12px; z-index: 2;
+  font-size: 10.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+  color: #6B5F55; background: rgba(251,248,243,.88); padding: 3px 8px; border-radius: 2px;
+}
 
-/* Section labels */
-.label { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin: 0 0 18px; display: flex; align-items: center; gap: 12px; }
-.label::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
-
-/* On the feed now */
-.feed { padding-block: 36px 12px; }
-.feature-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
-.feature { display: grid; grid-template-columns: minmax(0, 120px) minmax(0, 1fr); gap: 16px; align-items: start; }
-.feature .why { font-size: 14px; color: var(--muted); margin: 6px 0 12px; }
-.feature h3 { font-family: var(--display); font-weight: 500; font-size: 20px; line-height: 1.2; margin: 0; text-wrap: balance; }
-.feature .by { font-size: 13px; color: var(--muted); margin: 4px 0 0; }
-
-/* Shelf */
-.shelf { padding-block: 36px 56px; }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 32px 22px; }
-.book { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
-.book h3 { font-family: var(--display); font-weight: 500; font-size: 16px; line-height: 1.25; margin: 0; text-wrap: balance; }
-.book .by { font-size: 13px; color: var(--muted); margin: 2px 0 0; }
-
-.cover-link { display: block; text-decoration: none; border-radius: 2px; }
-.cover {
-  position: relative; aspect-ratio: 2 / 3; width: 100%; max-width: 100%;
-  border-radius: 2px 4px 4px 2px; overflow: hidden;
-  box-shadow: 0 1px 1px rgba(36,32,30,.12), 0 10px 22px -12px rgba(36,32,30,.55);
+/* Spines */
+.spine {
+  position: relative; flex: none; border: 0; cursor: pointer;
+  border-radius: 2px 2px 1px 1px;
+  display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+  padding: 14px 0 9px; color: #F3ECE1;
+  box-shadow: inset 2px 0 0 rgba(255,255,255,.12), inset -3px 0 0 rgba(0,0,0,.18), 0 1px 0 rgba(0,0,0,.2);
   transition: transform .25s ease, box-shadow .25s ease;
 }
-.cover-link:hover .cover { transform: translateY(-4px); box-shadow: 0 1px 1px rgba(36,32,30,.12), 0 18px 30px -14px rgba(36,32,30,.6); }
+.spine::before, .spine::after { content: ""; position: absolute; left: 4px; right: 4px; height: 2px; background: currentColor; opacity: .35; }
+.spine::before { top: 7px; }
+.spine::after { bottom: 24px; }
+.spine:hover, .spine:focus-visible { transform: translateY(-8px); box-shadow: inset 2px 0 0 rgba(255,255,255,.12), inset -3px 0 0 rgba(0,0,0,.18), 0 10px 14px -8px rgba(0,0,0,.45); }
+.spine .st {
+  writing-mode: vertical-rl; font-family: var(--display); font-weight: 500; font-size: 13px; line-height: 1.1;
+  max-height: calc(100% - 30px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.spine .sm { font-size: 7px; font-weight: 600; letter-spacing: .1em; opacity: .7; }
+.spine.light { color: #24201E; }
+.pulled { visibility: hidden; }
+
+/* Face-out featured books */
+.faceout { flex: none; border: 0; padding: 0; cursor: pointer; background: none; position: relative; transition: transform .25s ease; }
+.faceout:hover, .faceout:focus-visible { transform: translateY(-6px) rotate(-1deg); }
+.faceout .cover { width: 100%; height: 100%; }
+
+/* Covers (typeset fallback + image) */
+.cover { position: relative; overflow: hidden; border-radius: 2px 4px 4px 2px; box-shadow: 0 12px 20px -12px rgba(0,0,0,.6); }
 .cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-/* spine shadow so every cover reads as a physical book */
-.cover::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 7%; background: linear-gradient(90deg, rgba(0,0,0,.22), rgba(0,0,0,0)); z-index: 2; pointer-events: none; }
+.cover::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 7%; background: linear-gradient(90deg, rgba(0,0,0,.25), rgba(0,0,0,0)); z-index: 2; }
+.typeset { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 14% 12% 10%; color: #F3ECE1; text-align: left; }
+.typeset .t { font-family: var(--display); font-weight: 500; font-size: var(--ts, 14px); line-height: 1.12; overflow-wrap: break-word; hyphens: auto; }
+.typeset .rule { width: 28%; height: 1px; background: currentColor; opacity: .5; margin: 8px 0; }
+.typeset .a { font-family: var(--serif); font-style: italic; font-size: calc(var(--ts, 14px) * .82); opacity: .85; }
+.typeset .mark { font-size: 7px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; opacity: .6; }
+.cover.light .typeset { color: #24201E; }
 
-/* Typeset placeholder cover, used until a real cover image is added */
-.typeset { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 14% 12% 10%; color: #F2ECE3; }
-.typeset .t { overflow-wrap: break-word; hyphens: auto; font-family: var(--display); font-weight: 500; font-size: clamp(15px, 1.9vw, 21px); line-height: 1.12; text-wrap: balance; }
-.typeset .a { font-family: var(--serif); font-style: italic; font-size: clamp(13px, 1.4vw, 16px); opacity: .85; }
-.typeset .rule { width: 28%; height: 1px; background: currentColor; opacity: .5; margin: 10px 0; }
-.typeset .mark { font-family: var(--body); font-size: 8.5px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; opacity: .6; }
-.feature .typeset { padding: 12% 11% 9%; }
-.feature .typeset .t { font-size: 15px; }
-.feature .typeset .a { font-size: 13px; }
-.feature .typeset .mark { display: none; }
-.tone-ink { background: #24201E; }
-.tone-wine { background: #7A3438; }
-.tone-sage { background: #65705B; }
-.tone-taupe { background: #A78C70; }
-.tone-taupe .typeset { color: #24201E; }
-.tone-paper { background: #D9CDBB; }
-.tone-paper .typeset { color: #24201E; }
+.decor { flex: none; align-self: flex-end; pointer-events: none; }
 
-.buy {
-  display: inline-flex; align-items: center; gap: 6px; align-self: flex-start;
-  font-size: 13px; font-weight: 600; text-decoration: none;
-  color: var(--accent); border-bottom: 1px solid currentColor; padding-bottom: 1px;
+/* Overlay + opening book */
+.stage {
+  position: fixed; inset: 0; z-index: 50; display: grid; place-items: center;
+  background: var(--scrim); opacity: 0; transition: opacity .35s ease;
+  perspective: 1800px;
 }
-.buy:hover { color: var(--fg); }
-.feature .buy { background: var(--accent); color: var(--accent-fg); border: 0; padding: 8px 14px; border-radius: 2px; }
-.feature .buy:hover { background: var(--fg); color: var(--bg); }
-
-footer { border-top: 1px solid var(--rule); padding-block: 24px 40px; font-size: 13px; color: var(--muted); }
-footer p { margin: 0 0 6px; max-width: 70ch; }
-
-@media (max-width: 860px) {
-  .feature-grid { grid-template-columns: minmax(0, 1fr); gap: 22px; }
-  .feature { grid-template-columns: minmax(0, 104px) minmax(0, 1fr); }
+.stage.show { opacity: 1; }
+[hidden] { display: none !important; }
+.ghost { position: fixed; z-index: 60; margin: 0; pointer-events: none; transform-origin: center; }
+.book3d {
+  --w: 280px; position: relative; width: var(--w); height: calc(var(--w) * 1.5);
+  transform-style: preserve-3d; transition: transform .8s cubic-bezier(.3,.7,.2,1);
 }
-@media (max-width: 460px) {
-  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 16px; }
-  .typeset .t { font-size: 15px; }
+.book3d.open { transform: translateX(calc(var(--w) / 2)); }
+.book3d .leaf {
+  position: absolute; inset: 0; transform-origin: left center; transform-style: preserve-3d;
+  transition: transform .8s cubic-bezier(.3,.7,.2,1); z-index: 2;
+}
+.book3d.open .leaf { transform: rotateY(-180deg); }
+.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.face.front .cover { width: 100%; height: 100%; border-radius: 2px 6px 6px 2px; box-shadow: 0 30px 50px -20px rgba(0,0,0,.7); }
+.face.back { transform: rotateY(180deg); }
+.pg {
+  position: absolute; inset: 0; color: #24201E;
+  box-shadow: 0 30px 50px -24px rgba(0,0,0,.6);
+  padding: 10% 9%; display: flex; flex-direction: column; gap: 10px; overflow: auto;
+}
+.pg.left { border-radius: 6px 0 0 6px; background: linear-gradient(270deg, #E2D9C9 0, var(--page) 14%); justify-content: center; align-items: center; text-align: center; }
+.pg.right { border-radius: 0 6px 6px 0; background: linear-gradient(90deg, #E2D9C9 0, var(--page) 14%); }
+.pg .eyebrow { font-size: 10px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: #8A7A69; margin: 0; }
+.pg h2 { font-family: var(--display); font-weight: 500; font-size: clamp(16px, calc(var(--w) * .082), 25px); line-height: 1.15; margin: 0; text-wrap: balance; }
+.pg .by { font-family: var(--serif); font-style: italic; font-size: clamp(14px, calc(var(--w) * .06), 18px); color: #5C5046; margin: 0; }
+.pg .why { font-size: clamp(12.5px, calc(var(--w) * .05), 15px); margin: 0; color: #3A332E; }
+.pg .buy {
+  margin-top: auto; align-self: flex-start; text-decoration: none; font-weight: 600; font-size: 14px;
+  background: #7A3438; color: #FBF8F3; padding: 10px 16px; border-radius: 2px;
+}
+.pg .buy:hover { background: #24201E; }
+.pg .fine { font-size: 10.5px; color: #8A7A69; margin: 0; }
+.pg .bookplate { border: 1px solid #CDBFAA; padding: 18px 12px; display: grid; gap: 8px; width: 100%; }
+.pg .bookplate .from { font-family: var(--display); font-style: italic; font-size: clamp(14px, calc(var(--w) * .065), 19px); line-height: 1.2; }
+.pg .bookplate .cat { font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: #8A7A69; }
+.pg .bookplate .orn { font-family: var(--serif); font-size: 18px; color: #A78C70; }
+.close {
+  position: fixed; top: max(14px, env(safe-area-inset-top, 0px)); right: max(14px, env(safe-area-inset-right, 0px));
+  z-index: 70; border: 0; background: rgba(251,248,243,.94); color: #24201E; border-radius: 999px;
+  padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer;
+}
+
+footer { padding-block: 8px 40px; font-size: 12.5px; color: var(--muted); }
+footer p { margin: 0 0 6px; max-width: 72ch; }
+
+@keyframes twinkle { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+.bulb { animation: twinkle 3.2s ease-in-out infinite; }
+
+@media (max-width: 520px) {
+  .scene { padding-inline: 14px; }
+  .unit { padding: 10px 10px 0; }
+  .niche { padding: 16px 6px 0; min-height: 176px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .cover, .cover-link:hover .cover { transition: none; transform: none; }
+  .bulb { animation: none; }
+  .spine, .faceout, .book3d, .book3d .leaf, .stage { transition: none; }
 }
 </style>
 </head>
 <body>
 
-<header class="masthead">
-  <div class="wrap">
-    <div class="row">
-      <div>
-        <h1 class="brand">Barakah <em>Reads</em></h1>
-        <p class="tagline">Islamic books worth your time.</p>
-      </div>
-      <a class="ig" href="https://www.instagram.com/barakahreads/" id="ig-link">@barakahreads</a>
+<div class="wrap">
+  <header class="masthead">
+    <div>
+      <h1 class="brand">Barakah <em>Reads</em></h1>
+      <p class="tagline">Islamic books worth your time.</p>
     </div>
-    <p class="disclosure">Some links on this page are affiliate links. If you buy through them, Barakah Reads may earn a small commission at no extra cost to you. We only feature books we think are worth your time.</p>
+    <a class="ig" href="https://www.instagram.com/barakahreads/">@barakahreads</a>
+  </header>
+  <p class="hint">Tap any book to take it off the shelf.</p>
+
+  <div class="scene" id="scene">
+    <svg class="vine left" id="vineL" aria-hidden="true"></svg>
+    <svg class="vine right" id="vineR" aria-hidden="true"></svg>
+    <svg class="vine-top" id="vineT" aria-hidden="true" preserveAspectRatio="none"></svg>
+    <div class="unit" id="unit"></div>
   </div>
-</header>
 
-<main>
-  <section class="feed" aria-labelledby="feed-h">
-    <div class="wrap">
-      <h2 class="label" id="feed-h">On the feed now</h2>
-      <div class="feature-grid" id="featured"></div>
+  <footer>
+    <p>Some links on this page are affiliate links. If you buy through them, Barakah Reads may earn a small commission at no extra cost to you. We only feature books we think are worth your time.</p>
+    <p>Book covers remain the property of their publishers. Cover images courtesy of <a href="https://openlibrary.org/">Open Library</a>.</p>
+  </footer>
+</div>
+
+<div class="stage" id="stage" hidden role="dialog" aria-modal="true" aria-labelledby="bookTitle">
+  <button class="close" id="closeBtn" type="button">Close</button>
+  <div class="book3d" id="book3d">
+    <div class="pg right" id="pageRight"></div>
+    <div class="leaf">
+      <div class="face front" id="faceFront"></div>
+      <div class="face back"><div class="pg left" id="pageLeft"></div></div>
     </div>
-  </section>
-
-  <section class="shelf" aria-labelledby="shelf-h">
-    <div class="wrap">
-      <h2 class="label" id="shelf-h">The shelf</h2>
-      <div class="grid" id="shelf"></div>
-    </div>
-  </section>
-</main>
-
-<footer>
-  <div class="wrap">
-    <p>Barakah Reads is an independent Islamic book discovery account. Recommendations are chosen on merit, never because a link pays.</p>
-    <p>Book covers are shown to help you find the books and remain the property of their publishers. Cover images courtesy of <a href="https://openlibrary.org/">Open Library</a>.</p>
   </div>
-</footer>
+</div>
 
 <script>
 /*
   HOW TO EDIT
-  - link:   paste your affiliate link for the book (replace "#").
-  - isbn:   the cover is fetched from Open Library's free cover archive using this ISBN.
-  - cover:  optional path to your own cover image, e.g. "covers/piranesi.jpg". It wins over the ISBN.
-            If no cover can be found, a typeset cover in the brand colours shows instead.
-  - featured: true puts the book in "On the feed now" (keep it to three).
-  - Books appear on the shelf in the order listed here; put new posts at the top.
+  - link:     paste your affiliate link for the book (replace "#").
+  - isbn:     the cover loads from Open Library's free archive using this ISBN.
+  - cover:    optional path to your own image, e.g. "covers/road-to-mecca.jpg". It wins over the ISBN.
+  - featured: true stands the book face-out on the top shelf (keep it to three).
+  - short:    optional shorter title for the spine.
+  - why:      the line shown inside the book when it opens.
 */
 const BOOKS = [
-  { title: "The Road to Mecca", isbn: "9781887752374", author: "Muhammad Asad", tone: "taupe", featured: true,
+  { title: "The Road to Mecca", isbn: "9781887752374", author: "Muhammad Asad", tone: "taupe", featured: true, cat: "Memoir",
     why: "A European journalist crosses 1920s Arabia and finds his way to Islam.", link: "#", cover: "" },
-  { title: "Secrets of Divine Love", isbn: "9781734231205", author: "A. Helwa", tone: "wine", featured: true,
+  { title: "Secrets of Divine Love", isbn: "9781734231205", author: "A. Helwa", tone: "wine", featured: true, cat: "Spirituality",
     why: "For anyone who feels too far from God to come back. A book about mercy.", link: "#", cover: "" },
-  { title: "Muhammad: His Life Based on the Earliest Sources", isbn: "9781594771538", author: "Martin Lings", tone: "sage", featured: true,
-    why: "The most readable English biography of the Prophet \uFDFA, drawn from the earliest sources.", link: "#", cover: "" },
-  { title: "The Sealed Nectar", isbn: "", author: "Safiur Rahman Mubarakpuri", tone: "ink", why: "", link: "#", cover: "" },
-  { title: "Men Around the Messenger", isbn: "", author: "Khalid Muhammad Khalid", tone: "paper", why: "", link: "#", cover: "" },
-  { title: "The Clear Quran", isbn: "", author: "Dr. Mustafa Khattab (translator)", tone: "sage", why: "", link: "#", cover: "" },
-  { title: "Tafsir Ibn Kathir (Abridged)", isbn: "", author: "Ibn Kathir", tone: "ink", why: "", link: "#", cover: "" },
-  { title: "Revive Your Heart", isbn: "", author: "Nouman Ali Khan", tone: "taupe", why: "", link: "#", cover: "" },
-  { title: "Fortress of the Muslim", isbn: "", author: "Sa'id al-Qahtani", tone: "wine", why: "", link: "#", cover: "" },
-  { title: "Reclaim Your Heart", isbn: "9780998537337", author: "Yasmin Mogahed", tone: "sage", why: "", link: "#", cover: "" },
-  { title: "Purification of the Heart", isbn: "9780985565909", author: "Hamza Yusuf (translator)", tone: "paper", why: "", link: "#", cover: "" },
-  { title: "Don't Be Sad", isbn: "", author: "Aaidh al-Qarni", tone: "wine", why: "", link: "#", cover: "" },
-  { title: "On Disciplining the Soul and On Breaking the Two Desires", isbn: "9781911141358", author: "al-Ghazali, trans. T.J. Winter", tone: "ink", why: "", link: "#", cover: "" },
-  { title: "Being Muslim: A Practical Guide", isbn: "", author: "Asad Tarsin", tone: "taupe", why: "", link: "#", cover: "" },
-  { title: "The Productive Muslim", isbn: "", author: "Mohammed Faris", tone: "sage", why: "", link: "#", cover: "" },
-  { title: "Lost Islamic History", isbn: "9781849046893", author: "Firas Alkhateeb", tone: "wine", why: "", link: "#", cover: "" },
-  { title: "The Autobiography of Malcolm X", isbn: "9780345350688", author: "Malcolm X with Alex Haley", tone: "ink", why: "", link: "#", cover: "" },
-  { title: "Al-Muhaddithat: The Women Scholars in Islam", isbn: "", author: "Mohammad Akram Nadwi", tone: "paper", why: "", link: "#", cover: "" },
-  { title: "Minaret", isbn: "9780802170149", author: "Leila Aboulela", tone: "taupe", why: "", link: "#", cover: "" },
-  { title: "Ayesha at Last", isbn: "9781984802798", author: "Uzma Jalaluddin", tone: "sage", why: "", link: "#", cover: "" }
+  { title: "Muhammad: His Life Based on the Earliest Sources", short: "Muhammad", isbn: "9781594771538", author: "Martin Lings", tone: "sage", featured: true, cat: "Seerah",
+    why: "The most readable English biography of the Prophet ﷺ, drawn from the earliest sources.", link: "#", cover: "" },
+  { title: "Fortress of the Muslim", isbn: "", author: "Sa'id al-Qahtani", tone: "wine", cat: "Dua",
+    why: "A pocket book of duas for every moment of the day, each with its hadith reference.", link: "#", cover: "" },
+  { title: "The Sealed Nectar", isbn: "", author: "Safiur Rahman Mubarakpuri", tone: "ink", cat: "Seerah",
+    why: "An award-winning, chronological seerah, from Arabia before Islam to Madinah.", link: "#", cover: "" },
+  { title: "Men Around the Messenger", isbn: "", author: "Khalid Muhammad Khalid", tone: "paper", cat: "Companions",
+    why: "Short, story-led portraits of the Companions of the Prophet ﷺ.", link: "#", cover: "" },
+  { title: "The Clear Quran", isbn: "", author: "Dr. Mustafa Khattab (translator)", tone: "sage", cat: "Qur'an",
+    why: "A modern English translation of the Qur'an's meaning, approved by Al-Azhar.", link: "#", cover: "" },
+  { title: "Tafsir Ibn Kathir (Abridged)", short: "Tafsir Ibn Kathir", isbn: "", author: "Ibn Kathir", tone: "ink", cat: "Tafsir",
+    why: "The classical commentary that explains the Qur'an through the Qur'an, hadith and the Companions.", link: "#", cover: "" },
+  { title: "Revive Your Heart", isbn: "", author: "Nouman Ali Khan", tone: "taupe", cat: "Qur'an reflection",
+    why: "Short reflections linking the Qur'an to everyday struggles.", link: "#", cover: "" },
+  { title: "Reclaim Your Heart", isbn: "9780998537337", author: "Yasmin Mogahed", tone: "sage", cat: "Spirituality",
+    why: "Gentle essays on heartbreak, attachment and turning back to God.", link: "#", cover: "" },
+  { title: "Purification of the Heart", isbn: "9780985565909", author: "Hamza Yusuf (translator)", tone: "paper", cat: "Spirituality",
+    why: "A classical poem on the diseases of the heart, with their signs and cures.", link: "#", cover: "" },
+  { title: "Don't Be Sad", isbn: "", author: "Aaidh al-Qarni", tone: "wine", cat: "Spirituality",
+    why: "Encouragement from the Qur'an, hadith, history and poetry for hard days.", link: "#", cover: "" },
+  { title: "On Disciplining the Soul and On Breaking the Two Desires", short: "On Disciplining the Soul", isbn: "9781911141358", author: "al-Ghazali, trans. T.J. Winter", tone: "ink", cat: "Classical text",
+    why: "Two books of the Ihya on training the self and mastering desire.", link: "#", cover: "" },
+  { title: "Being Muslim: A Practical Guide", short: "Being Muslim", isbn: "", author: "Asad Tarsin", tone: "taupe", cat: "Practice",
+    why: "A clear guide to belief and practice that assumes no background.", link: "#", cover: "" },
+  { title: "The Productive Muslim", isbn: "", author: "Mohammed Faris", tone: "sage", cat: "Practice",
+    why: "Productivity built around salah, health and community, not hustle.", link: "#", cover: "" },
+  { title: "Lost Islamic History", isbn: "9781849046893", author: "Firas Alkhateeb", tone: "wine", cat: "History",
+    why: "1,400 years of Muslim history in one readable volume.", link: "#", cover: "" },
+  { title: "The Autobiography of Malcolm X", short: "Malcolm X", isbn: "9780345350688", author: "Malcolm X with Alex Haley", tone: "ink", cat: "Memoir",
+    why: "From prison to Hajj: one of the most influential memoirs of the 20th century.", link: "#", cover: "" },
+  { title: "Al-Muhaddithat: The Women Scholars in Islam", short: "Al-Muhaddithat", isbn: "", author: "Mohammad Akram Nadwi", tone: "paper", cat: "Women scholars",
+    why: "The forgotten tradition of Muslim women who studied and taught hadith.", link: "#", cover: "" },
+  { title: "Minaret", isbn: "9780802170149", author: "Leila Aboulela", tone: "taupe", cat: "Fiction",
+    why: "A Sudanese woman in London finds faith and community at her local mosque.", link: "#", cover: "" },
+  { title: "Ayesha at Last", isbn: "9781984802798", author: "Uzma Jalaluddin", tone: "sage", cat: "Fiction",
+    why: "Pride and Prejudice, retold in a Muslim community in Toronto.", link: "#", cover: "" }
 ];
+
+const TONES = { ink: ["#24201E", false], wine: ["#7A3438", false], sage: ["#65705B", false], taupe: ["#A78C70", true], paper: ["#DCD0BE", true] };
+const SHADES = { ink: ["#24201E", "#2F2A27", "#3A3330"], wine: ["#7A3438", "#6A2C30", "#8A4044"], sage: ["#65705B", "#56604D", "#748068"], taupe: ["#A78C70", "#B59A7E", "#9A8065"], paper: ["#DCD0BE", "#E6DCCB", "#CFC2AE"] };
+const reduceMotion = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
 
 function el(tag, cls, text) {
   const n = document.createElement(tag);
   if (cls) n.className = cls;
-  if (text) n.textContent = text;
+  if (text != null) n.textContent = text;
   return n;
 }
+function hash(s) { let h = 7; for (const c of s) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; }
+const isNarrow = () => window.innerWidth < 520;
 
-function typeset(book) {
+function coverEl(book, size) {
+  const [bg, light] = TONES[book.tone] || TONES.ink;
+  const c = el("div", "cover" + (light ? " light" : ""));
+  c.style.background = bg;
+  c.style.setProperty("--ts", size + "px");
   const t = el("div", "typeset");
   const top = el("div");
   top.append(el("div", "t", book.title), el("div", "rule"), el("div", "a", book.author));
-  t.append(top, el("div", "mark", "Barakah Reads"));
-  return t;
-}
-
-function cover(book) {
-  const link = el("a", "cover-link");
-  link.href = book.link;
-  link.target = "_blank";
-  link.rel = "sponsored noopener";
-  link.setAttribute("aria-label", "Get " + book.title + " by " + book.author);
-  const c = el("div", "cover tone-" + (book.tone || "ink"));
-  c.append(typeset(book));
+  t.append(top);
+  if (size >= 12) t.append(el("div", "mark", "Barakah Reads"));
+  c.append(t);
   const src = book.cover || (book.isbn ? "https://covers.openlibrary.org/b/isbn/" + book.isbn + "-L.jpg?default=false" : "");
   if (src) {
     const img = new Image();
     img.alt = "Cover of " + book.title;
-    img.loading = "lazy";
     img.onerror = () => img.remove();
     img.onload = () => { if (img.naturalWidth < 20) img.remove(); };
     img.src = src;
     c.append(img);
   }
-  link.append(c);
-  return link;
+  return c;
 }
 
-function buy(book) {
+/* Decor: small hand-drawn SVGs for the shelves */
+function decorSVG(kind) {
+  const s = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  s.setAttribute("class", "decor");
+  s.setAttribute("aria-hidden", "true");
+  if (kind === 0) {
+    s.setAttribute("viewBox", "0 0 60 70"); s.setAttribute("width", "46"); s.setAttribute("height", "54");
+    s.innerHTML = '<g><path d="M30 36 C24 20 26 8 30 2 C34 8 36 20 30 36Z" fill="#5E7A4A"/><path d="M30 38 C18 30 10 22 8 12 C18 16 26 24 30 38Z" fill="#7C9A5F"/><path d="M30 38 C42 30 50 22 52 12 C42 16 34 24 30 38Z" fill="#7C9A5F"/><path d="M30 40 C20 38 12 34 4 26 C16 26 24 30 30 40Z" fill="#5E7A4A"/><path d="M30 40 C40 38 48 34 56 26 C44 26 36 30 30 40Z" fill="#5E7A4A"/></g><path d="M14 40 H46 L42 68 H18 Z" fill="#F4EFE7" stroke="#D8CFC2"/><path d="M14 40 H46 V45 H14Z" fill="#E9E2D6"/>';
+  } else if (kind === 1) {
+    s.setAttribute("viewBox", "0 0 60 110"); s.setAttribute("width", "46"); s.setAttribute("height", "84");
+    let leaves = "";
+    for (let i = 0; i < 9; i++) {
+      const y = 12 + i * 7, side = i % 2 ? 1 : -1, len = 16 - Math.abs(i - 4);
+      leaves += '<path d="M30 ' + (y + 6) + ' q ' + side * len + ' -6 ' + side * (len + 6) + ' -14 q ' + (-side * 4) + ' 10 ' + (-side * (len + 6)) + ' 14z" fill="' + (i % 3 ? "#5E7A4A" : "#7C9A5F") + '"/>';
+    }
+    s.innerHTML = '<path d="M30 80 V10" stroke="#4E6A3C" stroke-width="2"/>' + leaves + '<path d="M16 78 H44 L40 108 H20Z" fill="#B9775A"/><path d="M14 76 H46 V82 H14Z" fill="#A5674C"/>';
+  } else if (kind === 2) {
+    s.setAttribute("viewBox", "0 0 40 50"); s.setAttribute("width", "30"); s.setAttribute("height", "38");
+    s.innerHTML = '<ellipse cx="20" cy="10" rx="9" ry="9" fill="#FFE3A8" opacity=".4"/><path d="M20 4 C23 9 22 13 20 15 C18 13 17 9 20 4Z" fill="#F6B94A"/><rect x="8" y="16" width="24" height="32" rx="3" fill="#F4EFE7" stroke="#D8CFC2"/><rect x="8" y="26" width="24" height="10" fill="#E3D2B5"/>';
+  } else {
+    s.setAttribute("viewBox", "0 0 70 34"); s.setAttribute("width", "60"); s.setAttribute("height", "29");
+    s.innerHTML = '<rect x="2" y="22" width="66" height="11" rx="1" fill="#65705B"/><rect x="6" y="12" width="58" height="10" rx="1" fill="#E6DCCB" stroke="#CFC2AE"/><rect x="4" y="3" width="60" height="9" rx="1" fill="#7A3438"/>';
+  }
+  return s;
+}
+
+/* Ivy and fairy lights */
+const LEAF = "M0 -6 C5 -6 7 -1 0 7 C-7 -1 -5 -6 0 -6Z";
+function bulb(x, y, delay) {
+  return '<g class="bulb" style="animation-delay:' + delay.toFixed(2) + 's"><circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="7" fill="var(--glow)"/><circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="2.4" fill="var(--bulb)"/></g>';
+}
+function drawVine(svg, height, seed) {
+  svg.setAttribute("viewBox", "0 0 40 " + height);
+  svg.setAttribute("height", height);
+  let d = "M20 0", leaves = "", bulbs = "";
+  for (let y = 18, i = 0; y < height; y += 18, i++) {
+    const x = 20 + Math.sin((y + seed * 10) / 37) * 7;
+    d += " L" + x.toFixed(1) + " " + y;
+    const side = i % 2 ? 1 : -1;
+    const rot = side * (30 + ((i * 17 + seed) % 25));
+    leaves += '<path transform="translate(' + (x + side * 8).toFixed(1) + ' ' + (y - 4) + ') rotate(' + rot + ')" d="' + LEAF + '" fill="' + ((i + seed) % 3 ? "var(--leaf)" : "var(--leaf-2)") + '"/>';
+    if (i % 3 === 1) bulbs += bulb(x - side * 4, y, (i * 0.37 + seed) % 3);
+  }
+  svg.innerHTML = '<path d="' + d + '" fill="none" stroke="#4E6A3C" stroke-width="1.4"/>' + bulbs + leaves;
+}
+function drawTopVine(svg, width) {
+  svg.setAttribute("viewBox", "0 0 " + width + " 34");
+  let d = "M0 18", leaves = "", bulbs = "";
+  for (let x = 20, i = 0; x < width; x += 20, i++) {
+    const y = 16 + Math.sin(x / 41) * 6;
+    d += " L" + x + " " + y.toFixed(1);
+    const side = i % 2 ? 1 : -1;
+    leaves += '<path transform="translate(' + (x - 4) + ' ' + (y + side * 7).toFixed(1) + ') rotate(' + (90 + side * (40 + (i * 13) % 25)) + ')" d="' + LEAF + '" fill="' + (i % 3 ? "var(--leaf)" : "var(--leaf-2)") + '"/>';
+    if (i % 3 === 0) bulbs += bulb(x, y + 2, (i * 0.29) % 3);
+  }
+  svg.innerHTML = '<path d="' + d + '" fill="none" stroke="#4E6A3C" stroke-width="1.4"/>' + bulbs + leaves;
+}
+
+/* Build the shelf */
+const unit = document.getElementById("unit");
+
+function spineFor(book, idx) {
+  const h = hash(book.title);
+  const narrow = isNarrow();
+  const light = (TONES[book.tone] || TONES.ink)[1];
+  const b = el("button", "spine" + (light ? " light" : ""));
+  b.type = "button";
+  b.style.width = ((narrow ? 30 : 36) + (h % 4) * (narrow ? 4 : 6)) + "px";
+  b.style.height = ((narrow ? 138 : 158) + (h % 5) * (narrow ? 7 : 9)) + "px";
+  b.style.background = (SHADES[book.tone] || SHADES.ink)[h % 3];
+  b.setAttribute("aria-label", book.title + " by " + book.author + ". Open book");
+  b.append(el("span", "st", book.short || book.title), el("span", "sm", "BR"));
+  b.addEventListener("click", () => openBook(idx, b));
+  return b;
+}
+
+function build() {
+  unit.innerHTML = "";
+  const narrow = isNarrow();
+  const inner = unit.clientWidth - (narrow ? 20 : 28) - (narrow ? 12 : 20);
+
+  // Top shelf: featured books stand face-out
+  const top = el("div", "shelf");
+  const nTop = el("div", "niche");
+  nTop.style.justifyContent = "center";
+  nTop.style.gap = narrow ? "10px" : "28px";
+  nTop.style.paddingTop = "36px";
+  nTop.append(el("span", "plaque", "On the feed now"));
+  const fw = Math.min(narrow ? 96 : 122, Math.floor((inner - 40) / 3.3));
+  if (!narrow) nTop.append(decorSVG(1));
+  BOOKS.forEach((b, i) => {
+    if (!b.featured) return;
+    const f = el("button", "faceout");
+    f.type = "button";
+    f.style.width = fw + "px";
+    f.style.height = Math.round(fw * 1.5) + "px";
+    f.setAttribute("aria-label", b.title + " by " + b.author + ". Open book");
+    f.append(coverEl(b, Math.max(10, Math.round(fw / 9.5))));
+    f.addEventListener("click", () => openBook(i, f));
+    nTop.append(f);
+  });
+  if (!narrow) nTop.append(decorSVG(2));
+  top.append(nTop, el("div", "board"));
+  unit.append(top);
+
+  // Spine shelves, packed to the available width
+  const spines = [];
+  BOOKS.forEach((b, i) => { if (!b.featured) spines.push(spineFor(b, i)); });
+  const decorW = narrow ? 52 : 72;
+  const cap = inner - decorW;
+  // Split spines into evenly filled shelves. If they spill onto an extra shelf, slim them slightly and retry.
+  function partition() {
+    const ws = spines.map(s => parseFloat(s.style.width) + 3);
+    const total = ws.reduce((a, b) => a + b, 0);
+    const n = Math.ceil(total / cap), target = total / n;
+    const rows = [[]]; let used = 0, cum = 0;
+    ws.forEach((w, k) => {
+      if (rows[rows.length - 1].length && (used + w > cap || cum + w / 2 > target * rows.length)) { rows.push([]); used = 0; }
+      rows[rows.length - 1].push(spines[k]); used += w; cum += w;
+    });
+    return { rows, n };
+  }
+  let plan = partition();
+  for (let t = 0; t < 4 && plan.rows.length > plan.n; t++) {
+    spines.forEach(s => { s.style.width = Math.max(26, parseFloat(s.style.width) * 0.95).toFixed(1) + "px"; });
+    plan = partition();
+  }
+  plan.rows.forEach((row, rowIdx) => {
+    const shelf = el("div", "shelf");
+    const niche = el("div", "niche");
+    const decor = decorSVG([0, 3, 2, 1][rowIdx % 4]);
+    const decorLeft = rowIdx % 2 === 1;
+    if (decorLeft) niche.append(decor);
+    row.forEach(s => niche.append(s));
+    if (!decorLeft) { const sp = el("div"); sp.style.flex = "1"; niche.append(sp, decor); }
+    shelf.append(niche, el("div", "board"));
+    unit.append(shelf);
+  });
+  const plinth = el("div"); plinth.style.height = "18px"; unit.append(plinth);
+
+  requestAnimationFrame(() => {
+    const H = unit.offsetHeight + 6;
+    drawVine(document.getElementById("vineL"), H, 3);
+    drawVine(document.getElementById("vineR"), H, 11);
+    drawTopVine(document.getElementById("vineT"), Math.max(100, unit.offsetWidth));
+  });
+}
+
+/* Open and close a book */
+const stage = document.getElementById("stage");
+const book3d = document.getElementById("book3d");
+const faceFront = document.getElementById("faceFront");
+const pageLeft = document.getElementById("pageLeft");
+const pageRight = document.getElementById("pageRight");
+const closeBtn = document.getElementById("closeBtn");
+let current = null, busy = false;
+
+function bookWidth() {
+  return Math.floor(Math.min(300, (window.innerWidth - 28) / 2, (window.innerHeight - 110) / 1.5));
+}
+function fillBook(book) {
+  const w = bookWidth();
+  book3d.style.setProperty("--w", w + "px");
+  faceFront.replaceChildren(coverEl(book, Math.max(14, Math.round(w / 11))));
+  const plate = el("div", "bookplate");
+  plate.append(el("span", "cat", book.cat || ""), el("span", "from", "From the Barakah Reads shelf"), el("span", "orn", "❦"));
+  pageLeft.replaceChildren(plate);
+  const h = el("h2", "", book.title); h.id = "bookTitle";
   const a = el("a", "buy", "Get the book");
-  a.href = book.link;
-  a.target = "_blank";
-  a.rel = "sponsored noopener";
-  return a;
+  a.href = book.link; a.target = "_blank"; a.rel = "sponsored noopener";
+  pageRight.replaceChildren(el("p", "eyebrow", book.cat || ""), h, el("p", "by", book.author), el("p", "why", book.why || ""), a, el("p", "fine", "Affiliate link. Barakah Reads may earn a small commission."));
+}
+const wait = ms => new Promise(r => setTimeout(r, ms));
+
+async function openBook(idx, trigger) {
+  if (busy || current) return;
+  busy = true;
+  current = { idx, trigger };
+  fillBook(BOOKS[idx]);
+  book3d.classList.remove("open");
+  stage.hidden = false;
+  const r = trigger.getBoundingClientRect();
+
+  if (reduceMotion || !trigger.animate) {
+    stage.classList.add("show");
+    book3d.classList.add("open");
+    trigger.classList.add("pulled");
+    busy = false; closeBtn.focus();
+    return;
+  }
+
+  // 1. it slides out of the shelf
+  const ghost = trigger.cloneNode(true);
+  ghost.classList.add("ghost");
+  Object.assign(ghost.style, { left: r.left + "px", top: r.top + "px", width: r.width + "px", height: r.height + "px", transition: "none" });
+  document.body.append(ghost);
+  trigger.classList.add("pulled");
+  book3d.style.visibility = "hidden";
+  requestAnimationFrame(() => stage.classList.add("show"));
+  await ghost.animate([
+    { transform: "translateY(0) scale(1)" },
+    { transform: "translateY(-28px) scale(1.07)", filter: "drop-shadow(0 18px 14px rgba(0,0,0,.45))" }
+  ], { duration: 300, easing: "cubic-bezier(.3,.7,.2,1)", fill: "forwards" }).finished;
+
+  // 2. it flies to the middle and turns edge-on
+  const hgt = bookWidth() * 1.5;
+  const dx = window.innerWidth / 2 - (r.left + r.width / 2);
+  const dy = window.innerHeight / 2 - (r.top + r.height / 2);
+  const sc = hgt / r.height;
+  await ghost.animate([
+    { transform: "translate(0, -28px) scale(1.07) perspective(900px) rotateY(0deg)" },
+    { transform: "translate(" + dx + "px, " + dy + "px) scale(" + sc + ") perspective(900px) rotateY(" + (trigger.classList.contains("spine") ? -88 : 88) + "deg)" }
+  ], { duration: 480, easing: "cubic-bezier(.5,0,.3,1)", fill: "forwards" }).finished;
+  ghost.remove();
+
+  // 3. the cover turns to face you
+  book3d.style.visibility = "";
+  await book3d.animate([{ transform: "rotateY(88deg)" }, { transform: "rotateY(0deg)" }],
+    { duration: 340, easing: "cubic-bezier(.2,.7,.3,1)" }).finished;
+
+  // 4. it opens to the page with the link
+  await wait(140);
+  book3d.classList.add("open");
+  await wait(820);
+  busy = false;
+  closeBtn.focus();
 }
 
-const featured = document.getElementById("featured");
-BOOKS.filter(b => b.featured).forEach(b => {
-  const f = el("article", "feature");
-  const info = el("div");
-  info.append(el("h3", "", b.title), el("p", "by", b.author));
-  if (b.why) info.append(el("p", "why", b.why));
-  info.append(buy(b));
-  f.append(cover(b), info);
-  featured.append(f);
-});
+async function closeBook() {
+  if (busy || !current) return;
+  busy = true;
+  const { trigger } = current;
+  if (!reduceMotion && book3d.animate) {
+    book3d.classList.remove("open");
+    await wait(700);
+    await book3d.animate([{ transform: "scale(1)", opacity: 1 }, { transform: "scale(.6) translateY(40px)", opacity: 0 }],
+      { duration: 260, easing: "ease-in" }).finished;
+  }
+  stage.classList.remove("show");
+  await wait(reduceMotion ? 0 : 260);
+  stage.hidden = true;
+  book3d.classList.remove("open");
+  trigger.classList.remove("pulled");
+  if (!reduceMotion && trigger.animate) {
+    trigger.animate([{ transform: "translateY(-24px)" }, { transform: "translateY(0)" }], { duration: 320, easing: "cubic-bezier(.3,.7,.2,1)" });
+  }
+  trigger.focus();
+  current = null; busy = false;
+}
 
-const shelf = document.getElementById("shelf");
-BOOKS.forEach(b => {
-  const card = el("article", "book");
-  const meta = el("div");
-  meta.append(el("h3", "", b.title), el("p", "by", b.author));
-  card.append(cover(b), meta, buy(b));
-  shelf.append(card);
+closeBtn.addEventListener("click", closeBook);
+stage.addEventListener("click", e => { if (e.target === stage) closeBook(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && current) closeBook(); });
+
+let rt, lastW = window.innerWidth;
+window.addEventListener("resize", () => {
+  clearTimeout(rt);
+  rt = setTimeout(() => {
+    if (current) { book3d.style.setProperty("--w", bookWidth() + "px"); return; }
+    if (window.innerWidth !== lastW) { lastW = window.innerWidth; build(); }
+  }, 150);
 });
+build();
 </script>
 </body>
 </html>

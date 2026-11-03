@@ -1,6 +1,6 @@
 # Barakah Reads: bio-link page
 
-A free, cover-led landing page for your Instagram bio link. It is one file (`index.html`) plus a `covers/` folder.
+An interactive bookshelf for your Instagram bio link: tap a book and it slides off the shelf and opens to its link. It is one file (`index.html`) plus a `covers/` folder.
 
 ## Put it online for free (GitHub Pages, about 10 minutes)
 
@@ -27,7 +27,7 @@ Ten books have no ISBN yet (they have many editions, so pick the one you link to
 
 ## Changing what's featured
 
-`featured: true` puts a book in "On the feed now". Keep it to three, and move the book you just posted about to the top of the list.
+`featured: true` stands a book face-out on the top shelf ("On the feed now"). Keep it to three. `why` is the line shown inside the open book, and `short` is an optional shorter spine title.
 
 ## Instagram button
 
