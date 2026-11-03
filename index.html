@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Barakah Reads Shelf</title>
+<meta name="description" content="Islamic books worth your time. The Barakah Reads collection.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=DM+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: a bookshop shelf. Masthead, the three books on the feed now, then the full cover wall. Covers do the talking. */
+:root {
+  --ink: #24201E;
+  --paper: #E9E1D5;
+  --taupe: #A78C70;
+  --sage: #65705B;
+  --wine: #7A3438;
+
+  --bg: #E9E1D5;
+  --surface: #F2ECE3;
+  --fg: #24201E;
+  --muted: #6B5F55;
+  --rule: #CFC3B2;
+  --accent: #7A3438;
+  --accent-fg: #F2ECE3;
+
+  --display: "Playfair Display", "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --body: "DM Sans", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1B1816; --surface: #24201E; --fg: #E9E1D5; --muted: #B3A595;
+    --rule: #3A332E; --accent: #C98A8D; --accent-fg: #1B1816; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1B1816; --surface: #24201E; --fg: #E9E1D5; --muted: #B3A595;
+  --rule: #3A332E; --accent: #C98A8D; --accent-fg: #1B1816; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--body); font-size: 15px; line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 1120px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+a { color: inherit; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+/* Masthead */
+.masthead { padding-block: 40px 28px; text-align: left; border-bottom: 1px solid var(--rule); }
+.masthead .row { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 32px; }
+.brand { font-family: var(--display); font-weight: 500; font-size: clamp(34px, 7vw, 64px); line-height: 1; letter-spacing: -0.01em; margin: 0; }
+.brand em { font-style: italic; color: var(--accent); }
+.tagline { font-family: var(--serif); font-style: italic; font-size: clamp(19px, 2.6vw, 24px); color: var(--muted); margin: 10px 0 0; }
+.ig { font-size: 13px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 2px; }
+.ig:hover { border-color: var(--fg); }
+
+.disclosure { font-size: 12.5px; color: var(--muted); margin: 18px 0 0; max-width: 62ch; }
+
+/* Section labels */
+.label { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin: 0 0 18px; display: flex; align-items: center; gap: 12px; }
+.label::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+
+/* On the feed now */
+.feed { padding-block: 36px 12px; }
+.feature-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+.feature { display: grid; grid-template-columns: minmax(0, 120px) minmax(0, 1fr); gap: 16px; align-items: start; }
+.feature .why { font-size: 14px; color: var(--muted); margin: 6px 0 12px; }
+.feature h3 { font-family: var(--display); font-weight: 500; font-size: 20px; line-height: 1.2; margin: 0; text-wrap: balance; }
+.feature .by { font-size: 13px; color: var(--muted); margin: 4px 0 0; }
+
+/* Shelf */
+.shelf { padding-block: 36px 56px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 32px 22px; }
+.book { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.book h3 { font-family: var(--display); font-weight: 500; font-size: 16px; line-height: 1.25; margin: 0; text-wrap: balance; }
+.book .by { font-size: 13px; color: var(--muted); margin: 2px 0 0; }
+
+.cover-link { display: block; text-decoration: none; border-radius: 2px; }
+.cover {
+  position: relative; aspect-ratio: 2 / 3; width: 100%; max-width: 100%;
+  border-radius: 2px 4px 4px 2px; overflow: hidden;
+  box-shadow: 0 1px 1px rgba(36,32,30,.12), 0 10px 22px -12px rgba(36,32,30,.55);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.cover-link:hover .cover { transform: translateY(-4px); box-shadow: 0 1px 1px rgba(36,32,30,.12), 0 18px 30px -14px rgba(36,32,30,.6); }
+.cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* spine shadow so every cover reads as a physical book */
+.cover::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 7%; background: linear-gradient(90deg, rgba(0,0,0,.22), rgba(0,0,0,0)); z-index: 2; pointer-events: none; }
+
+/* Typeset placeholder cover, used until a real cover image is added */
+.typeset { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 14% 12% 10%; color: #F2ECE3; }
+.typeset .t { overflow-wrap: break-word; hyphens: auto; font-family: var(--display); font-weight: 500; font-size: clamp(15px, 1.9vw, 21px); line-height: 1.12; text-wrap: balance; }
+.typeset .a { font-family: var(--serif); font-style: italic; font-size: clamp(13px, 1.4vw, 16px); opacity: .85; }
+.typeset .rule { width: 28%; height: 1px; background: currentColor; opacity: .5; margin: 10px 0; }
+.typeset .mark { font-family: var(--body); font-size: 8.5px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; opacity: .6; }
+.feature .typeset { padding: 12% 11% 9%; }
+.feature .typeset .t { font-size: 15px; }
+.feature .typeset .a { font-size: 13px; }
+.feature .typeset .mark { display: none; }
+.tone-ink { background: #24201E; }
+.tone-wine { background: #7A3438; }
+.tone-sage { background: #65705B; }
+.tone-taupe { background: #A78C70; }
+.tone-taupe .typeset { color: #24201E; }
+.tone-paper { background: #D9CDBB; }
+.tone-paper .typeset { color: #24201E; }
+
+.buy {
+  display: inline-flex; align-items: center; gap: 6px; align-self: flex-start;
+  font-size: 13px; font-weight: 600; text-decoration: none;
+  color: var(--accent); border-bottom: 1px solid currentColor; padding-bottom: 1px;
+}
+.buy:hover { color: var(--fg); }
+.feature .buy { background: var(--accent); color: var(--accent-fg); border: 0; padding: 8px 14px; border-radius: 2px; }
+.feature .buy:hover { background: var(--fg); color: var(--bg); }
+
+footer { border-top: 1px solid var(--rule); padding-block: 24px 40px; font-size: 13px; color: var(--muted); }
+footer p { margin: 0 0 6px; max-width: 70ch; }
+
+@media (max-width: 860px) {
+  .feature-grid { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  .feature { grid-template-columns: minmax(0, 104px) minmax(0, 1fr); }
+}
+@media (max-width: 460px) {
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 16px; }
+  .typeset .t { font-size: 15px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cover, .cover-link:hover .cover { transition: none; transform: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="row">
+      <div>
+        <h1 class="brand">Barakah <em>Reads</em></h1>
+        <p class="tagline">Islamic books worth your time.</p>
+      </div>
+      <a class="ig" href="https://www.instagram.com/barakahreads/" id="ig-link">@barakahreads</a>
+    </div>
+    <p class="disclosure">Some links on this page are affiliate links. If you buy through them, Barakah Reads may earn a small commission at no extra cost to you. We only feature books we think are worth your time.</p>
+  </div>
+</header>
+
+<main>
+  <section class="feed" aria-labelledby="feed-h">
+    <div class="wrap">
+      <h2 class="label" id="feed-h">On the feed now</h2>
+      <div class="feature-grid" id="featured"></div>
+    </div>
+  </section>
+
+  <section class="shelf" aria-labelledby="shelf-h">
+    <div class="wrap">
+      <h2 class="label" id="shelf-h">The shelf</h2>
+      <div class="grid" id="shelf"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Barakah Reads is an independent Islamic book discovery account. Recommendations are chosen on merit, never because a link pays.</p>
+    <p>Book covers are shown to help you find the books and remain the property of their publishers. Cover images courtesy of <a href="https://openlibrary.org/">Open Library</a>.</p>
+  </div>
+</footer>
+
+<script>
+/*
+  HOW TO EDIT
+  - link:   paste your affiliate link for the book (replace "#").
+  - isbn:   the cover is fetched from Open Library's free cover archive using this ISBN.
+  - cover:  optional path to your own cover image, e.g. "covers/piranesi.jpg". It wins over the ISBN.
+            If no cover can be found, a typeset cover in the brand colours shows instead.
+  - featured: true puts the book in "On the feed now" (keep it to three).
+  - Books appear on the shelf in the order listed here; put new posts at the top.
+*/
+const BOOKS = [
+  { title: "The Road to Mecca", isbn: "9781887752374", author: "Muhammad Asad", tone: "taupe", featured: true,
+    why: "A European journalist crosses 1920s Arabia and finds his way to Islam.", link: "#", cover: "" },
+  { title: "Secrets of Divine Love", isbn: "9781734231205", author: "A. Helwa", tone: "wine", featured: true,
+    why: "For anyone who feels too far from God to come back. A book about mercy.", link: "#", cover: "" },
+  { title: "Muhammad: His Life Based on the Earliest Sources", isbn: "9781594771538", author: "Martin Lings", tone: "sage", featured: true,
+    why: "The most readable English biography of the Prophet \uFDFA, drawn from the earliest sources.", link: "#", cover: "" },
+  { title: "The Sealed Nectar", isbn: "", author: "Safiur Rahman Mubarakpuri", tone: "ink", why: "", link: "#", cover: "" },
+  { title: "Men Around the Messenger", isbn: "", author: "Khalid Muhammad Khalid", tone: "paper", why: "", link: "#", cover: "" },
+  { title: "The Clear Quran", isbn: "", author: "Dr. Mustafa Khattab (translator)", tone: "sage", why: "", link: "#", cover: "" },
+  { title: "The Study Quran", isbn: "9780061125867", author: "Seyyed Hossein Nasr (editor)", tone: "ink", why: "", link: "#", cover: "" },
+  { title: "Revive Your Heart", isbn: "", author: "Nouman Ali Khan", tone: "wine", why: "", link: "#", cover: "" },
+  { title: "Fortress of the Muslim", isbn: "", author: "Sa'id al-Qahtani", tone: "taupe", why: "", link: "#", cover: "" },
+  { title: "Reclaim Your Heart", isbn: "9780998537337", author: "Yasmin Mogahed", tone: "sage", why: "", link: "#", cover: "" },
+  { title: "Purification of the Heart", isbn: "9780985565909", author: "Hamza Yusuf (translator)", tone: "paper", why: "", link: "#", cover: "" },
+  { title: "Don't Be Sad", isbn: "", author: "Aaidh al-Qarni", tone: "wine", why: "", link: "#", cover: "" },
+  { title: "On Disciplining the Soul and On Breaking the Two Desires", isbn: "9781911141358", author: "al-Ghazali, trans. T.J. Winter", tone: "ink", why: "", link: "#", cover: "" },
+  { title: "Being Muslim: A Practical Guide", isbn: "", author: "Asad Tarsin", tone: "taupe", why: "", link: "#", cover: "" },
+  { title: "The Productive Muslim", isbn: "", author: "Mohammed Faris", tone: "sage", why: "", link: "#", cover: "" },
+  { title: "Lost Islamic History", isbn: "9781849046893", author: "Firas Alkhateeb", tone: "wine", why: "", link: "#", cover: "" },
+  { title: "The Autobiography of Malcolm X", isbn: "9780345350688", author: "Malcolm X with Alex Haley", tone: "ink", why: "", link: "#", cover: "" },
+  { title: "Al-Muhaddithat: The Women Scholars in Islam", isbn: "", author: "Mohammad Akram Nadwi", tone: "paper", why: "", link: "#", cover: "" },
+  { title: "Minaret", isbn: "9780802170149", author: "Leila Aboulela", tone: "taupe", why: "", link: "#", cover: "" },
+  { title: "Ayesha at Last", isbn: "9781984802798", author: "Uzma Jalaluddin", tone: "sage", why: "", link: "#", cover: "" }
+];
+
+function el(tag, cls, text) {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text) n.textContent = text;
+  return n;
+}
+
+function typeset(book) {
+  const t = el("div", "typeset");
+  const top = el("div");
+  top.append(el("div", "t", book.title), el("div", "rule"), el("div", "a", book.author));
+  t.append(top, el("div", "mark", "Barakah Reads"));
+  return t;
+}
+
+function cover(book) {
+  const link = el("a", "cover-link");
+  link.href = book.link;
+  link.target = "_blank";
+  link.rel = "sponsored noopener";
+  link.setAttribute("aria-label", "Get " + book.title + " by " + book.author);
+  const c = el("div", "cover tone-" + (book.tone || "ink"));
+  c.append(typeset(book));
+  const src = book.cover || (book.isbn ? "https://covers.openlibrary.org/b/isbn/" + book.isbn + "-L.jpg?default=false" : "");
+  if (src) {
+    const img = new Image();
+    img.alt = "Cover of " + book.title;
+    img.loading = "lazy";
+    img.onerror = () => img.remove();
+    img.onload = () => { if (img.naturalWidth < 20) img.remove(); };
+    img.src = src;
+    c.append(img);
+  }
+  link.append(c);
+  return link;
+}
+
+function buy(book) {
+  const a = el("a", "buy", "Get the book");
+  a.href = book.link;
+  a.target = "_blank";
+  a.rel = "sponsored noopener";
+  return a;
+}
+
+const featured = document.getElementById("featured");
+BOOKS.filter(b => b.featured).forEach(b => {
+  const f = el("article", "feature");
+  const info = el("div");
+  info.append(el("h3", "", b.title), el("p", "by", b.author));
+  if (b.why) info.append(el("p", "why", b.why));
+  info.append(buy(b));
+  f.append(cover(b), info);
+  featured.append(f);
+});
+
+const shelf = document.getElementById("shelf");
+BOOKS.forEach(b => {
+  const card = el("article", "book");
+  const meta = el("div");
+  meta.append(el("h3", "", b.title), el("p", "by", b.author));
+  card.append(cover(b), meta, buy(b));
+  shelf.append(card);
+});
+</script>
+</body>
+</html>
