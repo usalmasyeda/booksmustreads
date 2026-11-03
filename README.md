@@ -23,7 +23,7 @@ To use your own image (for example the official cover from your affiliate progra
 1. Save it into `covers/`, e.g. `covers/piranesi.jpg`.
 2. In the `BOOKS` list set `cover: "covers/piranesi.jpg"`. It takes priority over the ISBN.
 
-Nine books have no ISBN yet (they have many editions, so pick the one you link to): The Sealed Nectar, Men Around the Messenger, The Clear Quran, Revive Your Heart, Fortress of the Muslim, Don't Be Sad, Being Muslim, The Productive Muslim and Al-Muhaddithat. Add an `isbn` or a `cover` image for each.
+Ten books have no ISBN yet (they have many editions, so pick the one you link to): The Sealed Nectar, Men Around the Messenger, The Clear Quran, Tafsir Ibn Kathir, In the Early Hours, Fortress of the Muslim, Don't Be Sad, Being Muslim, The Productive Muslim and Al-Muhaddithat. Add an `isbn` or a `cover` image for each.
 
 ## Changing what's featured
 
